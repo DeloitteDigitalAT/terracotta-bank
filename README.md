@@ -38,3 +38,42 @@ For a more guided approach, see the `/lessons` folder, which has written guides 
 
 For each lesson, there is a git branch with individual commits which progressively make the application more secure against the vulnerability described. Follow the commit messages to gain an understanding of good mitigations and why they are beneficial.
 
+## Find Security Bugs
+
+We have enabled the [findsecbugs gradle plugin](https://spotbugs.readthedocs.io/en/latest/gradle.html).
+To see it in action you can run:
+
+* `./gradlew spotbugsMain` to run SpotBugs analysis against your production code in your CI pipeline.
+
+You will then be able to see the output below in the console:
+
+```
+Starting a Gradle Daemon (subsequent builds will be faster)
+
+> Task :compileJava
+Note: /Users/jdamore/dev/projects/terracotta-bank/terracotta-bank-servlet/src/main/java/com/joshcummings/codeplay/terracotta/config/WebConfiguration.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+
+> Task :spotbugsMain FAILED
+The following classes needed for analysis were missing:
+  prepare
+  apply
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':spotbugsMain'.
+> A failure occurred while executing com.github.spotbugs.internal.spotbugs.SpotBugsRunner
+   > SpotBugs rule violations were found. See the report at: file:///Users/jdamore/dev/projects/terracotta-bank/terracotta-bank-servlet/build/reports/spotbugs/main.html
+
+* Try:
+Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.
+
+* Get more help at https://help.gradle.org
+
+BUILD FAILED in 16s
+3 actionable tasks: 2 executed, 1 up-to-date
+```
+
+In addition you can also publish the report generated in `./build/reports/spotbugs/main.html`
+

@@ -12,6 +12,21 @@ buildscript {
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath("me.champeau.gradle:jmh-gradle-plugin:0.4.7")
+		classpath("gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.8")
+	}
+}
+
+plugins {
+	id 'com.github.spotbugs' version '1.6.8'
+}
+spotbugs {
+	toolVersion = '3.1.10'
+}
+apply plugin: 'com.github.spotbugs'
+tasks.withType(com.github.spotbugs.SpotBugsTask) {
+	reports {
+		xml.enabled = false
+		html.enabled = true
 	}
 }
 
@@ -107,4 +122,6 @@ dependencies {
 	jmh('org.openjdk.jmh:jmh-core:1.21')
 	jmh('org.openjdk.jmh:jmh-generator-annprocess:1.21')
 	jmh('org.apache.httpcomponents:httpclient:4.5')
+
+	spotbugsPlugins('com.h3xstream.findsecbugs:findsecbugs-plugin:1.7.1')
 }
